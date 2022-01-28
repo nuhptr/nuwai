@@ -62,10 +62,8 @@ class UserService {
     required String? email,
     required String? password,
   }) async {
-    var url = '$baseUrl/login';
-
     var response = await dio.post(
-      url,
+      '$baseUrl/login',
       data: {
         'email': email,
         'password': password,
