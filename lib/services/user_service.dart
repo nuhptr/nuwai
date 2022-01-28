@@ -14,6 +14,8 @@ class UserService {
     required String? name,
   }) async {
     try {
+      Map<String, dynamic> header = {'Content-Type': 'application/json'};
+
       Response response = await dio.post(
         '$baseUrl/register',
         data: {
@@ -22,7 +24,7 @@ class UserService {
           'email': email,
         },
         options: Options(
-          headers: {'Content-Type': 'application/json'},
+          headers: header,
         ),
       );
 
@@ -44,13 +46,15 @@ class UserService {
 
   // logout
   Future<void> logout({required String? token}) async {
+    Map<String, dynamic> header = {
+      'Content-Type': 'application/json',
+      'Authorization': token ?? '',
+    };
+
     Response response = await dio.get(
       '$baseUrl/logout',
       options: Options(
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': token ?? '',
-        },
+        headers: header,
       ),
     );
 
@@ -62,16 +66,18 @@ class UserService {
     required String? email,
     required String? password,
   }) async {
-    var response = await dio.post(
+    Map<String, dynamic> header = {
+      'Content-Type': 'application/json',
+    };
+
+    Response response = await dio.post(
       '$baseUrl/login',
       data: {
         'email': email,
         'password': password,
       },
       options: Options(
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: header,
       ),
     );
     print(response.data);
@@ -87,7 +93,7 @@ class UserService {
     }
   }
 
-  // update
+  // update (belum done)
   Future<UserModel> update({
     required String? alamat,
     required String? token,
