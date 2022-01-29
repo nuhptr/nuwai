@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nuwai/cubit/job_cubit.dart';
 
+import 'package:nuwai/cubit/job_cubit.dart';
 import 'package:nuwai/cubit/page_cubit.dart';
 import 'package:nuwai/cubit/user_cubit.dart';
 import 'package:nuwai/cubit/work_cubit.dart';

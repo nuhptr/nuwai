@@ -36,7 +36,7 @@ class PerusahaanCard extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child: Image.asset(
+              child: Image.network(
                 image ?? '',
                 fit: BoxFit.cover,
                 width: double.infinity,

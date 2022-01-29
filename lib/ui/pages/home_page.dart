@@ -1,8 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nuwai/cubit/page_cubit.dart';
 
+import 'package:nuwai/cubit/job_cubit.dart';
+import 'package:nuwai/cubit/page_cubit.dart';
 import 'package:nuwai/cubit/user_cubit.dart';
 import 'package:nuwai/shared/theme.dart';
 import 'package:nuwai/ui/pages/detail_page.dart';
@@ -11,8 +12,19 @@ import 'package:nuwai/ui/widgets/fast_access_menu.dart';
 import 'package:nuwai/ui/widgets/perorangan_tile.dart';
 import 'package:nuwai/ui/widgets/perusahaan_card.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<JobCubit>().getJobByCategory(kategori: 'Perusahaan');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +66,7 @@ class HomePage extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       context.read<PageCubit>().setPage(2);
+                      Navigator.pushNamed(context, '/profil');
                     },
                     child: Container(
                       width: 50,
@@ -170,33 +183,51 @@ class HomePage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 15),
-          SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            padding: EdgeInsets.only(left: defaultMargin),
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
-                PerusahaanCard(
-                  title: 'Admin Ig',
-                  image: 'assets/image_perusahaan1.png',
-                  city: 'Pringsewu',
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => DetailPage()));
-                  },
-                ),
-                PerusahaanCard(
-                  title: 'Officer',
-                  image: 'assets/image_perusahaan2.png',
-                  city: 'Bandarlampung',
-                ),
-                PerusahaanCard(
-                  title: 'Konsultan',
-                  image: 'assets/image_perusahaan3.png',
-                  city: 'Metro',
-                ),
-              ],
-            ),
+          BlocConsumer<JobCubit, JobState>(
+            listener: (context, state) {
+              if (state is JobFailed) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Gagal ambil data pekerjaan'),
+                    backgroundColor: kRedColor,
+                  ),
+                );
+              }
+            },
+            builder: (context, state) {
+              if (state is JobSuccess) {
+                return SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
+                  padding: EdgeInsets.only(left: defaultMargin),
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: state.jobModel
+                        .map(
+                          (jobData) => PerusahaanCard(
+                            image: jobData.fotoLowongan,
+                            title: jobData.namaPekerjaan,
+                            city: jobData.lokasiPekerjaan,
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => DetailPage(
+                                    jobModel: jobData,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        )
+                        .take(5)
+                        .toList(),
+                  ),
+                );
+              }
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            },
           ),
         ],
       );

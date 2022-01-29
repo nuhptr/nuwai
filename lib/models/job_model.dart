@@ -41,11 +41,11 @@ class JobModel extends Equatable {
       logoPerusahaanPath: json['logo_perusahaan_path'],
       fotoLowongan: json['foto_lowongan'],
       tentangPembukaLowongan: json['tentang_pembuka_lowongan'],
-      tenggangWaktuPekerjaan: json['tenggang_waktu_pekerjaan'],
+      tenggangWaktuPekerjaan: DateTime.parse(json['tenggang_waktu_pekerjaan']),
       lokasiPekerjaan: json['lokasi_pekerjaan'],
       kategori: json['kategori'],
-      createdAt: json['created_at'],
-      updatedAt: json['updated_at'],
+      createdAt: DateTime.parse(json['created_at']),
+      updatedAt: DateTime.parse(json['updated_at']),
     );
   }
 

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:nuwai/models/job_model.dart';
 import 'package:nuwai/shared/theme.dart';
 import 'package:nuwai/ui/widgets/custom_button.dart';
 
 class DetailPage extends StatefulWidget {
-  DetailPage({Key? key}) : super(key: key);
+  DetailPage({Key? key, this.jobModel}) : super(key: key);
+
+  final JobModel? jobModel;
 
   @override
   State<DetailPage> createState() => _DetailPageState();
@@ -62,7 +65,9 @@ class _DetailPageState extends State<DetailPage> {
         height: 370,
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/image_perusahaan1.png'),
+            image: NetworkImage(
+              widget.jobModel?.fotoLowongan ?? 'assets/image_perusahaan1.png',
+            ),
             fit: BoxFit.cover,
           ),
         ),
@@ -108,11 +113,11 @@ class _DetailPageState extends State<DetailPage> {
               borderRadius: BorderRadius.circular(8),
               child:
                   // TODO: conditional if image null
-                  Image.asset(
-                'assets/image_perusahaan2.png',
+                  Image.network(
+                widget.jobModel?.logoPerusahaanPath ?? 'assets/logo_nuwai.png',
                 width: 40,
                 height: 40,
-                fit: BoxFit.cover,
+                fit: BoxFit.contain,
               ),
             )
           ],
@@ -157,7 +162,7 @@ class _DetailPageState extends State<DetailPage> {
                               SizedBox(width: 12),
                               Expanded(
                                 child: Text(
-                                  'BNI',
+                                  widget.jobModel?.namaPerusahaan ?? 'No name',
                                   style: blackTextStyle.copyWith(
                                     fontWeight: semiBold,
                                     fontSize: 16,
@@ -170,7 +175,7 @@ class _DetailPageState extends State<DetailPage> {
                           ),
                         ),
                         Text(
-                          'Bandarlampung',
+                          widget.jobModel?.lokasiPekerjaan ?? 'No location',
                           overflow: TextOverflow.ellipsis,
                           style: blackTextStyle.copyWith(
                             fontWeight: semiBold,
@@ -185,7 +190,7 @@ class _DetailPageState extends State<DetailPage> {
                       children: [
                         Expanded(
                           child: Text(
-                            'Marketing',
+                            widget.jobModel?.namaPekerjaan ?? 'No job',
                             maxLines: 2,
                             style: orangeTextStyle.copyWith(
                               fontWeight: semiBold,
@@ -208,7 +213,11 @@ class _DetailPageState extends State<DetailPage> {
                       children: [
                         Expanded(
                           child: Text(
-                            'Gaji IDR 2.000.000',
+                            NumberFormat.currency(
+                              locale: 'id',
+                              symbol: 'Gaji IDR ',
+                              decimalDigits: 0,
+                            ).format(widget.jobModel?.gaji ?? 0),
                             style: orangeTextStyle.copyWith(
                               fontWeight: light,
                             ),
@@ -216,7 +225,10 @@ class _DetailPageState extends State<DetailPage> {
                         ),
                         Text(
                           DateFormat('dd/MM/y')
-                              .format(DateTime.now())
+                              .format(
+                                widget.jobModel?.tenggangWaktuPekerjaan ??
+                                    DateTime.now(),
+                              )
                               .toString(),
                           style: orangeTextStyle.copyWith(
                             fontWeight: light,
@@ -238,11 +250,11 @@ class _DetailPageState extends State<DetailPage> {
                         SizedBox(height: 10),
                         Text(
                           // TODO: non null
-                          'Deskripsi tentang pekerjaan',
+                          widget.jobModel?.deskripsi ?? 'No description',
                           style: blackTextStyle.copyWith(
                             fontWeight: regular,
                           ),
-                          textAlign: TextAlign.left,
+                          textAlign: TextAlign.justify,
                         ),
                         SizedBox(height: 20),
                         Text(
@@ -254,11 +266,12 @@ class _DetailPageState extends State<DetailPage> {
                         ),
                         SizedBox(height: 10),
                         Text(
-                          'tentang pembuka lowongan',
+                          widget.jobModel?.tentangPembukaLowongan ??
+                              'No information',
                           style: blackTextStyle.copyWith(
                             fontWeight: regular,
                           ),
-                          textAlign: TextAlign.left,
+                          textAlign: TextAlign.justify,
                         ),
                         SizedBox(
                           height: 30,

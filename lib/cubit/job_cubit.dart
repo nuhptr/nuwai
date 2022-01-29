@@ -12,7 +12,6 @@ class JobCubit extends Cubit<JobState> {
   void getJobByCategory({required String? kategori}) async {
     try {
       emit(JobLoading());
-
       List<JobModel> jobModel = await JobService().getJobKategori(
         kategori: kategori,
       );
