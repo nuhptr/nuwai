@@ -13,14 +13,16 @@ class UserModel extends Equatable {
   final String? accessToken;
   final String? userToken;
 
-  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
-        dataUser: json['user'] != null
-            ? DataUser.fromJson(json['user'])
-            : DataUser.initial(json),
-        tokenType: json['token_type'],
-        accessToken: json['access_token'],
-        userToken: json['token_type'] + json['access_token'],
-      );
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
+      dataUser: json['user'] != null
+          ? DataUser.fromJson(json['user'])
+          : DataUser.initial(json),
+      tokenType: json['token_type'],
+      accessToken: json['access_token'],
+      userToken: json['token_type'] + json['access_token'],
+    );
+  }
 
   Map<dynamic, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

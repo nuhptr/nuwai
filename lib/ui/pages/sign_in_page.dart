@@ -78,13 +78,13 @@ class _SignInPageState extends State<SignInPage> {
           children: [
             CustomTextFormField(
               title: 'Email',
-              hintText: 'Your email',
+              hintText: 'contoh: abc@gmail.com',
               inputType: TextInputType.emailAddress,
               textEditingController: emailController,
             ),
             CustomTextFormField(
-              title: 'Password',
-              hintText: 'Your password',
+              title: 'Kata sandi',
+              hintText: 'minimal 8 karakter',
               textEditingController: passwordController,
               endForm: true,
               obscureText: isObscure,
@@ -119,7 +119,7 @@ class _SignInPageState extends State<SignInPage> {
             } else if (state is UserFailed) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('Gagal Login'),
+                  content: Text('Gagal masuk aplikasi'),
                   backgroundColor: kRedColor,
                 ),
               );
@@ -129,7 +129,7 @@ class _SignInPageState extends State<SignInPage> {
             if (state is UserLoading) {
               return Center(
                   child: CustomButton(
-                title: ' ',
+                title: '',
                 onPressed: () {},
                 isLoading: true,
               ));
@@ -169,9 +169,10 @@ class _SignInPageState extends State<SignInPage> {
                 },
                 child: Text(
                   'Daftar',
-                  style: grayTextStyle.copyWith(
+                  style: orangeTextStyle.copyWith(
                     fontSize: 16,
                     fontWeight: bold,
+                    decoration: TextDecoration.underline,
                   ),
                 ),
               ),

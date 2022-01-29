@@ -49,19 +49,19 @@ class _SignUpPageState extends State<SignUpPage> {
           children: [
             CustomTextFormField(
               title: 'Nama Lengkap',
-              hintText: 'Nama Lengkapmu',
+              hintText: 'Nama lengkapmu',
               inputType: TextInputType.name,
               textEditingController: nameController,
             ),
             CustomTextFormField(
               title: 'Email',
-              hintText: 'Email mu',
+              hintText: 'contoh: abc@gmail.com',
               inputType: TextInputType.emailAddress,
               textEditingController: emailController,
             ),
             CustomTextFormField(
               title: 'Kata Sandi',
-              hintText: 'Kata sandimu',
+              hintText: 'Minimal 8 karakter',
               textEditingController: passwordController,
               obscureText: isObscure,
               inputType: TextInputType.visiblePassword,
@@ -116,7 +116,7 @@ class _SignUpPageState extends State<SignUpPage> {
             } else if (state is UserFailed) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('Gagal Mendaftar'),
+                  content: Text('Gagal mendaftar'),
                   backgroundColor: kRedColor,
                 ),
               );
@@ -190,9 +190,10 @@ class _SignUpPageState extends State<SignUpPage> {
               },
               child: Text(
                 'Login',
-                style: grayTextStyle.copyWith(
+                style: orangeTextStyle.copyWith(
                   fontSize: 16,
                   fontWeight: bold,
+                  decoration: TextDecoration.underline,
                 ),
               ),
             ),

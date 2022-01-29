@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:nuwai/shared/theme.dart';
 import 'package:nuwai/cubit/page_cubit.dart';
 import 'package:nuwai/cubit/user_cubit.dart';
-
-import 'package:nuwai/shared/theme.dart';
+import 'package:nuwai/ui/widgets/header_profile.dart';
 import 'package:nuwai/ui/widgets/profile_menu_tile.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -13,55 +13,24 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget header() {
-      return BlocBuilder<UserCubit, UserState>(
+      return BlocConsumer<UserCubit, UserState>(
+        listener: (context, state) {
+          if (state is UserFailed) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Gagal ambil data'),
+                backgroundColor: kRedColor,
+              ),
+            );
+          }
+        },
         builder: (context, state) {
           if (state is UserSuccess) {
-            return Column(
-              children: [
-                Container(
-                  width: 150,
-                  height: 150,
-                  margin: EdgeInsets.only(bottom: 25),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image:
-                          NetworkImage(state.user.dataUser?.photoProfile ?? ''),
-                    ),
-                  ),
-                ),
-                Text(
-                  state.user.dataUser?.name ?? 'No Name',
-                  style: orangeTextStyle.copyWith(
-                    fontWeight: bold,
-                    fontSize: 24,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 5),
-                Text(
-                  state.user.dataUser?.email ?? '',
-                  style: grayTextStyle.copyWith(
-                    fontSize: 16,
-                    fontWeight: regular,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 20),
-                Container(
-                  width: double.infinity,
-                  height: 1,
-                  decoration: BoxDecoration(
-                    color: kPrimaryColor,
-                  ),
-                ),
-                const SizedBox(height: 30),
-              ],
+            return HeaderProfile(
+              state: state,
             );
-          } else {
-            return SizedBox();
           }
+          return HeaderProfile();
         },
       );
     }
@@ -74,9 +43,10 @@ class ProfilePage extends StatelessWidget {
           return true;
         },
         child: ListView(
-          padding: EdgeInsets.symmetric(
-            horizontal: defaultMargin,
-            vertical: 50,
+          padding: EdgeInsets.only(
+            left: defaultMargin,
+            right: defaultMargin,
+            top: 70,
           ),
           children: [
             header(),
@@ -85,13 +55,6 @@ class ProfilePage extends StatelessWidget {
               title: 'Ubah Profil',
               onPressed: () {
                 Navigator.pushNamed(context, '/edit');
-              },
-            ),
-            ProfileMenuItem(
-              iconUrl: 'assets/icon_book.png',
-              title: 'Panduan Membuka Lowongan',
-              onPressed: () {
-                Navigator.pushNamed(context, '/guide');
               },
             ),
             ProfileMenuItem(
@@ -106,7 +69,7 @@ class ProfilePage extends StatelessWidget {
                 if (state is UserFailed) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text(state.message),
+                      content: Text('Gagal keluar aplikasi'),
                       backgroundColor: kRedColor,
                     ),
                   );
@@ -120,12 +83,6 @@ class ProfilePage extends StatelessWidget {
                 }
               },
               builder: (context, state) {
-                if (state is UserLoading) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-
                 if (state is UserSuccess) {
                   return ProfileMenuItem(
                     iconUrl: 'assets/icon_sign_out.png',
@@ -137,7 +94,11 @@ class ProfilePage extends StatelessWidget {
                     },
                   );
                 } else {
-                  return SizedBox();
+                  return ProfileMenuItem(
+                    iconUrl: 'assets/icon_sign_out.png',
+                    title: 'Keluar',
+                    onPressed: () {},
+                  );
                 }
               },
             )

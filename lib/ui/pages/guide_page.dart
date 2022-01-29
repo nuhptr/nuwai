@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nuwai/cubit/page_cubit.dart';
 
+import 'package:nuwai/cubit/page_cubit.dart';
 import 'package:nuwai/shared/theme.dart';
 
 class GuidePage extends StatelessWidget {
@@ -19,7 +19,7 @@ class GuidePage extends StatelessWidget {
           children: [
             IconButton(
               onPressed: () {
-                context.read<PageCubit>().setPage(2);
+                context.read<PageCubit>().setPage(0);
                 Navigator.pop(context);
               },
               icon: Icon(Icons.arrow_back_ios),

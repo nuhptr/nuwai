@@ -1,11 +1,13 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nuwai/cubit/page_cubit.dart';
 
 import 'package:nuwai/cubit/user_cubit.dart';
 import 'package:nuwai/shared/theme.dart';
 import 'package:nuwai/ui/pages/detail_page.dart';
 import 'package:nuwai/ui/widgets/carousel_item.dart';
+import 'package:nuwai/ui/widgets/fast_access_menu.dart';
 import 'package:nuwai/ui/widgets/perorangan_tile.dart';
 import 'package:nuwai/ui/widgets/perusahaan_card.dart';
 
@@ -49,16 +51,21 @@ class HomePage extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Container(
-                    width: 50,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: NetworkImage(
-                          state.user.dataUser?.photoProfile ??
-                              'https://www.armandtourandtravel.com/sitepad-data/uploads//2021/02/avatar.jpg',
+                  GestureDetector(
+                    onTap: () {
+                      context.read<PageCubit>().setPage(2);
+                    },
+                    child: Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: NetworkImage(
+                            state.user.dataUser?.photoProfile ??
+                                'https://www.armandtourandtravel.com/sitepad-data/uploads//2021/02/avatar.jpg',
+                          ),
                         ),
                       ),
                     ),
@@ -75,11 +82,11 @@ class HomePage extends StatelessWidget {
 
     Widget carouselPromo() {
       return Container(
-        margin: EdgeInsets.symmetric(vertical: 30),
+        margin: EdgeInsets.only(top: 30, bottom: 20),
         child: CarouselSlider(
           items: [
             CaraouselItem(image: 'assets/image_banner.png'),
-            CaraouselItem(image: 'assets/image_banner.png'),
+            CaraouselItem(image: 'assets/image_banner3.png'),
             CaraouselItem(image: 'assets/image_banner2.png'),
           ],
           options: CarouselOptions(
@@ -89,6 +96,62 @@ class HomePage extends StatelessWidget {
             viewportFraction: 0.9,
           ),
         ),
+      );
+    }
+
+    Widget fastAccess() {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: EdgeInsets.only(
+              left: defaultMargin,
+              right: defaultMargin,
+              bottom: 15,
+            ),
+            child: Text(
+              'Akses Cepat',
+              style: blackTextStyle.copyWith(
+                fontSize: 18,
+                fontWeight: bold,
+              ),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(
+              left: defaultMargin,
+              right: defaultMargin,
+              bottom: 20,
+            ),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              color: kWhiteColor,
+            ),
+            child: Column(
+              children: [
+                FastAccessMenu(
+                  imageUrl: 'assets/icon_notice.png',
+                  title: 'Panduan apply pekerjaan',
+                  onPressed: () {},
+                ),
+                Container(
+                  width: double.infinity,
+                  height: 1.5,
+                  decoration: BoxDecoration(
+                    color: kGrayColor.withOpacity(0.2),
+                  ),
+                ),
+                FastAccessMenu(
+                  imageUrl: 'assets/icon_info.png',
+                  title: 'Panduan membuka loker',
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/guide');
+                  },
+                ),
+              ],
+            ),
+          ),
+        ],
       );
     }
 
@@ -165,7 +228,7 @@ class HomePage extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 50),
+            const SizedBox(height: 60),
           ],
         ),
       );
@@ -182,6 +245,7 @@ class HomePage extends StatelessWidget {
           children: [
             header(),
             carouselPromo(),
+            fastAccess(),
             perusahaan(),
             perorangan(),
           ],

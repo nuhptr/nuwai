@@ -31,21 +31,23 @@ class JobModel extends Equatable {
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
-  factory JobModel.fromJson(Map<String, dynamic> json) => JobModel(
-        id: json['id'],
-        namaPekerjaan: json['nama_pekerjaan'],
-        deskripsi: json['deskripsi'],
-        namaPerusahaan: json['nama_perusahaan'],
-        gaji: json['gaji'],
-        logoPerusahaanPath: json['logo_perusahaan_path'],
-        fotoLowongan: json['foto_lowongan'],
-        tentangPembukaLowongan: json['tentang_pembuka_lowongan'],
-        tenggangWaktuPekerjaan: json['tenggang_waktu_pekerjaan'],
-        lokasiPekerjaan: json['lokasi_pekerjaan'],
-        kategori: json['kategori'],
-        createdAt: json['created_at'],
-        updatedAt: json['updated_at'],
-      );
+  factory JobModel.fromJson(Map<String, dynamic> json) {
+    return JobModel(
+      id: json['id'],
+      namaPekerjaan: json['nama_pekerjaan'],
+      deskripsi: json['deskripsi'],
+      namaPerusahaan: json['nama_perusahaan'],
+      gaji: json['gaji'],
+      logoPerusahaanPath: json['logo_perusahaan_path'],
+      fotoLowongan: json['foto_lowongan'],
+      tentangPembukaLowongan: json['tentang_pembuka_lowongan'],
+      tenggangWaktuPekerjaan: json['tenggang_waktu_pekerjaan'],
+      lokasiPekerjaan: json['lokasi_pekerjaan'],
+      kategori: json['kategori'],
+      createdAt: json['created_at'],
+      updatedAt: json['updated_at'],
+    );
+  }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

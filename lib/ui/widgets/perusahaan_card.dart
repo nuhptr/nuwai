@@ -24,7 +24,7 @@ class PerusahaanCard extends StatelessWidget {
         height: 166,
         margin: EdgeInsets.only(
           right: 16,
-          bottom: 30,
+          bottom: 20,
         ),
         padding: EdgeInsets.all(10),
         decoration: BoxDecoration(

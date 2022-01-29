@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+
 import 'package:nuwai/shared/theme.dart';
 
 class ComingSoon extends StatelessWidget {
@@ -13,20 +14,18 @@ class ComingSoon extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
-              width: 200,
-              height: 200,
+              width: 250,
+              height: 250,
               child: Lottie.asset(
                 'assets/notfound.json',
-                repeat: true,
+                fit: BoxFit.cover,
                 animate: true,
               ),
             ),
-            SizedBox(
-              height: 1,
-            ),
+            SizedBox(height: 50),
             Text(
-              'Segera Datang',
-              style: orangeTextStyle.copyWith(
+              'Segera datang di Playstore',
+              style: grayTextStyle.copyWith(
                 fontSize: 18,
                 fontWeight: semiBold,
               ),
