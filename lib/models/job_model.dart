@@ -47,20 +47,23 @@ class JobModel extends Equatable {
         updatedAt: json['updated_at'],
       );
 
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'nama_pekerjaan': namaPekerjaan,
-        'nama_perusahaan': namaPerusahaan,
-        'deskripsi': deskripsi,
-        'gaji': gaji,
-        'logo_perusahaan_path': logoPerusahaanPath,
-        'foto_lowongan': fotoLowongan,
-        'tentang_pembuka_lowongan': tentangPembukaLowongan,
-        'tenggang_waktu_pekerjaan': tenggangWaktuPekerjaan,
-        'kategori': kategori,
-        'created_at': createdAt,
-        'updated_at': updatedAt,
-      };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['nama_pekerjaan'] = namaPekerjaan;
+    data['nama_perusahaan'] = namaPerusahaan;
+    data['deskripsi'] = deskripsi;
+    data['gaji'] = gaji;
+    data['logo_perusahaan'] = logoPerusahaanPath;
+    data['foto_lowongan'] = fotoLowongan;
+    data['tentang_pembuka_lowongan'] = tentangPembukaLowongan;
+    data['tenggang_waktu_pekerjaan'] = tenggangWaktuPekerjaan;
+    data['kategori'] = kategori;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+
+    return data;
+  }
 
   @override
   List<Object?> get props => [

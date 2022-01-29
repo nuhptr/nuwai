@@ -31,7 +31,7 @@ class HomePage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          state.user.name ?? 'User not found',
+                          'Hi, ${state.user.dataUser?.name ?? ''}',
                           style: blackTextStyle.copyWith(
                             fontSize: 24,
                             fontWeight: semiBold,
@@ -40,7 +40,7 @@ class HomePage extends StatelessWidget {
                         ),
                         const SizedBox(height: 5),
                         Text(
-                          state.user.email ?? 'Email not found',
+                          'Siap mencari pekerjaan?',
                           style: blackTextStyle.copyWith(
                             fontSize: 16,
                             fontWeight: regular,
@@ -57,7 +57,7 @@ class HomePage extends StatelessWidget {
                       image: DecorationImage(
                         fit: BoxFit.cover,
                         image: NetworkImage(
-                          state.user.photoProfile ??
+                          state.user.dataUser?.photoProfile ??
                               'https://www.armandtourandtravel.com/sitepad-data/uploads//2021/02/avatar.jpg',
                         ),
                       ),
@@ -80,7 +80,7 @@ class HomePage extends StatelessWidget {
           items: [
             CaraouselItem(image: 'assets/image_banner.png'),
             CaraouselItem(image: 'assets/image_banner.png'),
-            CaraouselItem(image: 'assets/image_banner.png'),
+            CaraouselItem(image: 'assets/image_banner2.png'),
           ],
           options: CarouselOptions(
             autoPlay: true,

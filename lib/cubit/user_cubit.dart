@@ -47,7 +47,7 @@ class UserCubit extends Cubit<UserState> {
   void logout({required String? token}) async {
     try {
       emit(UserLoading());
-      await UserService().logout(token: token);
+      await UserService().logout(userToken: token);
       emit(UserInitial());
     } catch (e) {
       emit(UserFailed(e.toString()));
@@ -63,13 +63,13 @@ class UserCubit extends Cubit<UserState> {
   }) async {
     try {
       emit(UserLoading());
-      UserModel user = await UserService().update(
-        alamat: alamat,
-        token: token,
-        cvPath: cvPath,
-        photoProfile: photoProfile,
-      );
-      emit(UserSuccess(user));
+      // UserModel user = await UserService().update(
+      //   alamat: alamat,
+      //   token: token,
+      //   cvPath: cvPath,
+      //   photoProfile: photoProfile,
+      // );
+      // emit(UserSuccess(user));
     } catch (e) {
       emit(UserFailed(e.toString()));
     }

@@ -8,13 +8,13 @@ class CaraouselItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 309,
-      margin: EdgeInsets.symmetric(horizontal: 20),
+      height: 190,
+      margin: EdgeInsets.symmetric(horizontal: 8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
         image: DecorationImage(
           image: AssetImage(image ?? ''),
-          fit: BoxFit.contain,
+          fit: BoxFit.cover,
         ),
       ),
     );

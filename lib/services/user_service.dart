@@ -7,7 +7,7 @@ class UserService {
 
   final Dio dio = Dio();
 
-  // register
+  //TODO: register
   Future<UserModel> register({
     required String? email,
     required String? password,
@@ -31,8 +31,7 @@ class UserService {
       print('user: ${response.data} ${response.statusCode}');
       if (response.statusCode == 200) {
         var data = response.data['data'];
-        UserModel user = UserModel.fromJson(data['user']);
-        user.token = 'Bearer ' + data['access_token'];
+        UserModel user = UserModel.fromJson(data);
 
         return user;
       } else {
@@ -44,11 +43,11 @@ class UserService {
     }
   }
 
-  // logout
-  Future<void> logout({required String? token}) async {
+  //TODO: logout
+  Future<void> logout({required String? userToken}) async {
     Map<String, dynamic> header = {
       'Content-Type': 'application/json',
-      'Authorization': token ?? '',
+      'Authorization': userToken ?? '',
     };
 
     Response response = await dio.get(
@@ -61,7 +60,7 @@ class UserService {
     print(response.data);
   }
 
-  // login
+  //TODO login
   Future<UserModel> login({
     required String? email,
     required String? password,
@@ -84,8 +83,7 @@ class UserService {
 
     if (response.statusCode == 200) {
       var data = response.data['data'];
-      UserModel user = UserModel.fromJson(data['user']);
-      user.token = 'Bearer ' + data['access_token'];
+      UserModel user = UserModel.fromJson(data);
 
       return user;
     } else {
@@ -93,7 +91,7 @@ class UserService {
     }
   }
 
-  // update (belum done)
+  //TODO: update (belum done)
   Future<UserModel> update({
     required String? alamat,
     required String? token,

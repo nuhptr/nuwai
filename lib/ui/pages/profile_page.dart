@@ -3,14 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:nuwai/cubit/page_cubit.dart';
 import 'package:nuwai/cubit/user_cubit.dart';
-import 'package:nuwai/models/user_model.dart';
+
 import 'package:nuwai/shared/theme.dart';
 import 'package:nuwai/ui/widgets/profile_menu_tile.dart';
 
 class ProfilePage extends StatelessWidget {
   ProfilePage({Key? key}) : super(key: key);
-
-  final UserModel user = UserModel();
 
   @override
   Widget build(BuildContext context) {
@@ -28,12 +26,13 @@ class ProfilePage extends StatelessWidget {
                     shape: BoxShape.circle,
                     image: DecorationImage(
                       fit: BoxFit.cover,
-                      image: NetworkImage(state.user.photoProfile ?? ''),
+                      image:
+                          NetworkImage(state.user.dataUser?.photoProfile ?? ''),
                     ),
                   ),
                 ),
                 Text(
-                  state.user.name ?? 'No Name',
+                  state.user.dataUser?.name ?? 'No Name',
                   style: orangeTextStyle.copyWith(
                     fontWeight: bold,
                     fontSize: 24,
@@ -42,7 +41,7 @@ class ProfilePage extends StatelessWidget {
                 ),
                 const SizedBox(height: 5),
                 Text(
-                  state.user.email ?? '',
+                  state.user.dataUser?.email ?? '',
                   style: grayTextStyle.copyWith(
                     fontSize: 16,
                     fontWeight: regular,
@@ -132,7 +131,9 @@ class ProfilePage extends StatelessWidget {
                     iconUrl: 'assets/icon_sign_out.png',
                     title: 'Keluar',
                     onPressed: () {
-                      context.read<UserCubit>().logout(token: state.user.token);
+                      context
+                          .read<UserCubit>()
+                          .logout(token: state.user.userToken);
                     },
                   );
                 } else {

@@ -8,12 +8,13 @@ class WorkServices {
   final Dio dio = Dio();
 
   // TODO: Post the id of jobs with users id
-  Future<WorkModel> submitJobs({int? idPekerjaan, String? userToken}) async {
+  Future<WorkModel> submitJobs(
+      {required int? idJob, required String? userToken}) async {
     String url = '$baseUrl/lamaran';
 
     Map<String, dynamic> data = {
       'id_users': userToken,
-      'id_pekerjaan': idPekerjaan,
+      'id_pekerjaan': idJob,
     };
 
     Map<String, dynamic> header = {

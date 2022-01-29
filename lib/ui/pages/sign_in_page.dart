@@ -128,8 +128,11 @@ class _SignInPageState extends State<SignInPage> {
           builder: (context, state) {
             if (state is UserLoading) {
               return Center(
-                child: CircularProgressIndicator(),
-              );
+                  child: CustomButton(
+                title: ' ',
+                onPressed: () {},
+                isLoading: true,
+              ));
             }
             return CustomButton(
               title: 'Masuk',

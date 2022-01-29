@@ -9,12 +9,14 @@ class CustomButton extends StatelessWidget {
     required this.onPressed,
     this.width = double.infinity,
     this.margin = EdgeInsets.zero,
+    this.isLoading = false,
   }) : super(key: key);
 
   final String? title;
   final double? width;
   final Function()? onPressed;
   final EdgeInsets? margin;
+  final bool? isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -30,13 +32,18 @@ class CustomButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
           ),
         ),
-        child: Text(
-          title ?? '',
-          style: whiteTextStyle.copyWith(
-            fontSize: 20,
-            fontWeight: bold,
-          ),
-        ),
+        child: isLoading == true
+            ? CircularProgressIndicator(
+                strokeWidth: 2,
+                color: kWhiteColor,
+              )
+            : Text(
+                title ?? '',
+                style: whiteTextStyle.copyWith(
+                  fontSize: 20,
+                  fontWeight: bold,
+                ),
+              ),
       ),
     );
   }

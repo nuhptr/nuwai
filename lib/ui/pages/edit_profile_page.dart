@@ -100,7 +100,7 @@ class _EditProfilState extends State<EditProfil> {
                       shape: BoxShape.circle,
                       image: DecorationImage(
                         image: imageFile == null
-                            ? NetworkImage(state.user.photoProfile ?? '')
+                            ? NetworkImage(state.user.dataUser?.photoProfile ?? '')
                             : FileImage(File(imageFile!.path)) as ImageProvider,
                         fit: BoxFit.cover,
                       ),
@@ -139,19 +139,19 @@ class _EditProfilState extends State<EditProfil> {
               children: [
                 CustomTextFormField(
                   title: 'Nama Lengkap',
-                  hintText: state.user.name ?? 'Name not found',
+                  hintText: state.user.dataUser?.name ?? 'Name not found',
                   isEnable: false,
                   textEditingController: nameController,
                 ),
                 CustomTextFormField(
                   title: 'Email',
-                  hintText: state.user.email ?? 'Email not found',
+                  hintText: state.user.dataUser?.email ?? 'Email not found',
                   isEnable: false,
                   textEditingController: emailController,
                 ),
                 CustomTextFormField(
                   title: 'Alamat Lengkap',
-                  hintText: state.user.alamat ?? 'alamat not found',
+                  hintText: state.user.dataUser?.alamat ?? 'alamat not found',
                   textEditingController: alamatController,
                   inputType: TextInputType.text,
                 )
@@ -180,7 +180,7 @@ class _EditProfilState extends State<EditProfil> {
                       image: DecorationImage(
                         image: cvFileImage == null
                             ? NetworkImage(
-                                state.user.cvPath ?? '',
+                                state.user.dataUser?.cvPath ?? '',
                               )
                             : FileImage(File(cvFileImage!.path))
                                 as ImageProvider,
@@ -243,7 +243,7 @@ class _EditProfilState extends State<EditProfil> {
                       alamat: alamatController?.text,
                       photoProfile: imageFile?.path,
                       cvPath: cvFileImage?.path,
-                      token: state.user.token,
+                      token: state.user.userToken,
                     );
               },
               margin: EdgeInsets.only(top: 30, bottom: 20),

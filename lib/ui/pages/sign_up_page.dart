@@ -125,10 +125,12 @@ class _SignUpPageState extends State<SignUpPage> {
           builder: (context, state) {
             if (state is UserLoading) {
               return Center(
-                child: CircularProgressIndicator(),
-              );
+                  child: CustomButton(
+                onPressed: () {},
+                title: '',
+                isLoading: true,
+              ));
             }
-
             return CustomButton(
               title: 'Daftar',
               onPressed: () {
