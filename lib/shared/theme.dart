@@ -12,6 +12,7 @@ Color kGrayColor = Color(0xff8D8D8F);
 Color kWhiteColor = Color(0xffFFFFFF);
 Color dropShadowColor = Color(0xffF2F2F2);
 Color kRedColor = Colors.red.shade300;
+Color kGreenColor = Colors.green.shade300;
 
 Color kSubtitleColor = Color(0xffE4E4E4);
 Color kBackgroundColor = Color(0xffFAFAFA);

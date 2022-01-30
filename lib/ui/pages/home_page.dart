@@ -1,13 +1,14 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nuwai/cubit/job_individual_cubit.dart';
 
-import 'package:nuwai/cubit/job_cubit.dart';
+import 'package:nuwai/shared/theme.dart';
 import 'package:nuwai/cubit/page_cubit.dart';
 import 'package:nuwai/cubit/user_cubit.dart';
-import 'package:nuwai/shared/theme.dart';
 import 'package:nuwai/ui/pages/detail_page.dart';
 import 'package:nuwai/ui/widgets/carousel_item.dart';
+import 'package:nuwai/cubit/job_perusahaan_cubit.dart';
 import 'package:nuwai/ui/widgets/fast_access_menu.dart';
 import 'package:nuwai/ui/widgets/perorangan_tile.dart';
 import 'package:nuwai/ui/widgets/perusahaan_card.dart';
@@ -23,7 +24,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    context.read<JobCubit>().getJobByCategory(kategori: 'Perusahaan');
+    context.read<JobPerusahaanCubit>().getJobByCategory();
   }
 
   @override
@@ -183,9 +184,9 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           const SizedBox(height: 15),
-          BlocConsumer<JobCubit, JobState>(
+          BlocConsumer<JobPerusahaanCubit, JobPerusahaanState>(
             listener: (context, state) {
-              if (state is JobFailed) {
+              if (state is JobPerusahaanFailed) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text('Gagal ambil data pekerjaan'),
@@ -195,7 +196,7 @@ class _HomePageState extends State<HomePage> {
               }
             },
             builder: (context, state) {
-              if (state is JobSuccess) {
+              if (state is JobPerusahaanSuccess) {
                 return SingleChildScrollView(
                   physics: BouncingScrollPhysics(),
                   padding: EdgeInsets.only(left: defaultMargin),
@@ -247,17 +248,23 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             const SizedBox(height: 15),
-            Column(
-              children: [
-                PeroranganTile(
-                  name: 'Assistant Rumah Tangga',
-                  city: 'Pringsewu',
-                ),
-                PeroranganTile(
-                  name: 'Proggramer',
-                  city: 'Bandar Lampung',
-                ),
-              ],
+            BlocBuilder<JobIndividualCubit, JobIndividualState>(
+              builder: (context, state) {
+                if (state is JobIndividualSuccess) {
+                  return Column(
+                    children: state.jobModel
+                        .map(
+                          (job) => PeroranganTile(
+                            name: job.namaPekerjaan,
+                            city: job.lokasiPekerjaan,
+                            time: job.tenggangWaktuPekerjaan,
+                          ),
+                        )
+                        .toList(),
+                  );
+                }
+                return;
+              },
             ),
             const SizedBox(height: 60),
           ],

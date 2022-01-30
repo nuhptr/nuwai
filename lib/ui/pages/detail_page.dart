@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:nuwai/cubit/user_cubit.dart';
+
+import 'package:nuwai/cubit/work_cubit.dart';
 import 'package:nuwai/models/job_model.dart';
+import 'package:nuwai/models/user_model.dart';
 import 'package:nuwai/shared/theme.dart';
 import 'package:nuwai/ui/widgets/custom_button.dart';
 
@@ -14,7 +19,7 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
-  Future<void> showConfirmation() async {
+  void showConfirmation() async {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -42,16 +47,30 @@ class _DetailPageState extends State<DetailPage> {
                   style: blackTextStyle.copyWith(fontWeight: regular),
                 ),
               ),
-              TextButton(
-                // TODO: Jika tombol ditekan panggil function handleSubmit
-                onPressed: () {},
-                child: Text(
-                  'Iya',
-                  style: blackTextStyle.copyWith(
-                    fontWeight: regular,
-                  ),
-                ),
-              )
+              BlocBuilder<UserCubit, UserState>(
+                builder: (context, state) {
+                  if (state is UserSuccess) {
+                    return TextButton(
+                      // TODO: Jika tombol ditekan panggil function handleSubmit
+                      onPressed: () {
+                        context.read<WorkCubit>().applyWork(
+                              token: state.user.userToken,
+                              idJob: widget.jobModel?.id,
+                            );
+                      },
+                      child: Text(
+                        'Iya',
+                        style: blackTextStyle.copyWith(
+                          fontWeight: regular,
+                        ),
+                      ),
+                    );
+                  }
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                },
+              ),
             ],
           );
         });

@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:nuwai/cubit/job_cubit.dart';
 import 'package:nuwai/cubit/page_cubit.dart';
 import 'package:nuwai/cubit/user_cubit.dart';
 import 'package:nuwai/cubit/work_cubit.dart';
+import 'package:nuwai/cubit/job_individual_cubit.dart';
+import 'package:nuwai/cubit/job_perusahaan_cubit.dart';
+import 'package:nuwai/cubit/search_job_cubit.dart';
 import 'package:nuwai/ui/pages/coming_soon_page.dart';
 import 'package:nuwai/ui/pages/edit_profile_page.dart';
 import 'package:nuwai/ui/pages/get_started_page.dart';
@@ -43,7 +45,13 @@ class MyApp extends StatelessWidget {
           create: (context) => UserCubit(),
         ),
         BlocProvider(
-          create: (context) => JobCubit(),
+          create: (context) => SearchJobCubit(),
+        ),
+        BlocProvider(
+          create: (context) => JobPerusahaanCubit(),
+        ),
+        BlocProvider(
+          create: (context) => JobIndividualCubit(),
         ),
         BlocProvider(
           create: (context) => WorkCubit(),
