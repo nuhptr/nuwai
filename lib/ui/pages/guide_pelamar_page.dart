@@ -5,8 +5,8 @@ import 'package:nuwai/cubit/page_cubit.dart';
 import 'package:nuwai/shared/theme.dart';
 import 'package:nuwai/ui/widgets/timeline_tile.dart';
 
-class GuidePage extends StatelessWidget {
-  GuidePage({Key? key}) : super(key: key);
+class GuidePelamarPage extends StatelessWidget {
+  GuidePelamarPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +49,7 @@ class GuidePage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Cara Membuka \nLowongan',
+              'Panduan Mendaftar\nPekerjaan',
               style: orangeTextStyle.copyWith(
                 fontSize: 25,
                 fontWeight: bold,
@@ -57,35 +57,25 @@ class GuidePage extends StatelessWidget {
             ),
             TimeLineTile(
               text:
-                  'Hubungi no.wa 089674135843\nhal ini bertujuan untuk menghindari pembukaan lowongan yang bersifat palsu.',
+                  'Sebelum mendaftar pastikan mengisi data diri terlebih dahulu, dan jangan langsung apply pekerjaan.',
               isFirst: true,
               isAfterLine: true,
             ),
             TimeLineTile(
               text:
-                  'Sertakan KTP, dan data-data\npekerjaan yang bisa dilihat di halaman detail pekerjaan.',
-              isBeforeLine: true,
-              isAfterLine: true,
-            ),
-            TimeLineTile(
-              text: 'Untuk gaji boleh dicantumkan \natau tidak.',
+                  'Usahakan memasukan data diri formal seperti cv dan foto profil.',
               isBeforeLine: true,
               isAfterLine: true,
             ),
             TimeLineTile(
               text:
-                  'Pekerjaan bersifat halal, dan tidak terpaku dengan bulanan / tetap, contoh : Pencuci Piring untuk 2 Jam.',
+                  'Kami tidak meminta imbalan kepada pendaftar pekerjaan, jika ada kejadian seperti itu harap dilaporkan',
               isBeforeLine: true,
               isAfterLine: true,
             ),
             TimeLineTile(
               text:
-                  'Dengan membaca point 1-4 anda menyetujui persyaratan dan persetujuan kami.',
-              isBeforeLine: true,
-              isAfterLine: true,
-            ),
-            TimeLineTile(
-              text: 'Selamat mencari jasa~ jika ada keluhan sampaikan saja.',
+                  'Selamat mencari pekerjaan~ jika ada keluhan sampaikan saja.',
               isLast: true,
               isBeforeLine: true,
             ),

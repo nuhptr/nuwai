@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:nuwai/cubit/user_cubit.dart';
 
+import 'package:nuwai/shared/theme.dart';
+import 'package:nuwai/cubit/user_cubit.dart';
 import 'package:nuwai/cubit/work_cubit.dart';
 import 'package:nuwai/models/job_model.dart';
-import 'package:nuwai/models/user_model.dart';
-import 'package:nuwai/shared/theme.dart';
 import 'package:nuwai/ui/widgets/custom_button.dart';
 
 class DetailPage extends StatefulWidget {
@@ -85,7 +84,8 @@ class _DetailPageState extends State<DetailPage> {
         decoration: BoxDecoration(
           image: DecorationImage(
             image: NetworkImage(
-              widget.jobModel?.fotoLowongan ?? 'assets/image_perusahaan1.png',
+              widget.jobModel?.fotoLowongan ??
+                  'https://baa.undip.ac.id/wp-content/uploads/2014/01/lowongan-kerja.png',
             ),
             fit: BoxFit.cover,
           ),
@@ -296,7 +296,7 @@ class _DetailPageState extends State<DetailPage> {
                           height: 30,
                         ),
                         CustomButton(
-                          title: 'Lamar',
+                          title: 'Apply',
                           onPressed: () {
                             showConfirmation();
                           },

@@ -23,6 +23,7 @@ dependencies:
   lottie: ^1.2.1
   path_provider: ^2.0.8
   shimmer: ^2.0.0
+  timeline_tile: ^2.0.0
 
 flutter_icons:
   android: true

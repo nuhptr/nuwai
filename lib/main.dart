@@ -12,6 +12,7 @@ import 'package:nuwai/ui/pages/coming_soon_page.dart';
 import 'package:nuwai/ui/pages/edit_profile_page.dart';
 import 'package:nuwai/ui/pages/get_started_page.dart';
 import 'package:nuwai/ui/pages/guide_page.dart';
+import 'package:nuwai/ui/pages/guide_pelamar_page.dart';
 import 'package:nuwai/ui/pages/main_page.dart';
 import 'package:nuwai/ui/pages/sign_in_page.dart';
 import 'package:nuwai/ui/pages/sign_up_page.dart';
@@ -68,6 +69,7 @@ class MyApp extends StatelessWidget {
           '/main': (context) => MainPage(),
           '/coming-soon': (context) => ComingSoon(),
           '/guide': (context) => GuidePage(),
+          '/guide-apply': (context) => GuidePelamarPage(),
           '/edit': (context) => EditProfil(),
         },
       ),

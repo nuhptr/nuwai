@@ -1,17 +1,18 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nuwai/cubit/job_individual_cubit.dart';
 
 import 'package:nuwai/shared/theme.dart';
 import 'package:nuwai/cubit/page_cubit.dart';
 import 'package:nuwai/cubit/user_cubit.dart';
 import 'package:nuwai/ui/pages/detail_page.dart';
 import 'package:nuwai/ui/widgets/carousel_item.dart';
+import 'package:nuwai/cubit/job_individual_cubit.dart';
 import 'package:nuwai/cubit/job_perusahaan_cubit.dart';
 import 'package:nuwai/ui/widgets/fast_access_menu.dart';
 import 'package:nuwai/ui/widgets/perorangan_tile.dart';
 import 'package:nuwai/ui/widgets/perusahaan_card.dart';
+import 'package:nuwai/ui/widgets/shimmer_container.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
@@ -25,6 +26,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     context.read<JobPerusahaanCubit>().getJobByCategory();
+    context.read<JobIndividualCubit>().getJobByCategory();
   }
 
   @override
@@ -67,7 +69,6 @@ class _HomePageState extends State<HomePage> {
                   GestureDetector(
                     onTap: () {
                       context.read<PageCubit>().setPage(2);
-                      Navigator.pushNamed(context, '/profil');
                     },
                     child: Container(
                       width: 50,
@@ -146,7 +147,9 @@ class _HomePageState extends State<HomePage> {
                 FastAccessMenu(
                   imageUrl: 'assets/icon_notice.png',
                   title: 'Panduan apply pekerjaan',
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/guide-apply');
+                  },
                 ),
                 Container(
                   width: double.infinity,
@@ -225,8 +228,14 @@ class _HomePageState extends State<HomePage> {
                   ),
                 );
               }
-              return Center(
-                child: CircularProgressIndicator(),
+              return Container(
+                margin: EdgeInsets.symmetric(horizontal: defaultMargin),
+                child: ShimmerContainer(
+                  marginBottom: 16,
+                  paddingBottom: 20,
+                  paddingTop: 20,
+                  radius: 10,
+                ),
               );
             },
           ),
@@ -258,12 +267,19 @@ class _HomePageState extends State<HomePage> {
                             name: job.namaPekerjaan,
                             city: job.lokasiPekerjaan,
                             time: job.tenggangWaktuPekerjaan,
+                            onPressed: () => DetailPage(jobModel: job),
                           ),
                         )
+                        .take(4)
                         .toList(),
                   );
                 }
-                return;
+                return ShimmerContainer(
+                  marginBottom: 16,
+                  paddingBottom: 20,
+                  paddingTop: 20,
+                  radius: 10,
+                );
               },
             ),
             const SizedBox(height: 60),

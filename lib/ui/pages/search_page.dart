@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 
 import 'package:nuwai/shared/theme.dart';
+import 'package:nuwai/cubit/search_job_cubit.dart';
 import 'package:nuwai/ui/widgets/perorangan_tile.dart';
 
-class SearchPage extends StatelessWidget {
+class SearchPage extends StatefulWidget {
   SearchPage({Key? key}) : super(key: key);
 
   @override
+  State<SearchPage> createState() => _SearchPageState();
+}
+
+class _SearchPageState extends State<SearchPage> {
+  @override
   Widget build(BuildContext context) {
     TextEditingController? searchController = TextEditingController(text: '');
-    String? searchResult = '';
-    bool? isSearch = false;
+    String? searchResult;
 
     Widget header() {
       return Container(
@@ -45,8 +52,16 @@ class SearchPage extends StatelessWidget {
               ),
               IconButton(
                 iconSize: 20,
+                highlightColor: Colors.transparent,
                 splashColor: Colors.transparent,
-                onPressed: () {},
+                onPressed: () {
+                  setState(() {
+                    searchResult = searchController.text;
+                  });
+                  context
+                      .read<SearchJobCubit>()
+                      .getJobByName(nameJob: searchResult ?? '');
+                },
                 icon: const Icon(
                   Icons.search,
                   color: Colors.orange,
@@ -63,18 +78,51 @@ class SearchPage extends StatelessWidget {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
       floatingActionButton: header(),
       backgroundColor: kBackgroundColor,
-      body: ListView(
-        padding: EdgeInsets.only(
-          left: defaultMargin,
-          right: defaultMargin,
-          top: 140,
-        ),
-        children: [
-          PeroranganTile(
-            name: 'ngasal',
-            city: 'ngasal',
-          ),
-        ],
+      body: BlocConsumer<SearchJobCubit, SearchJobState>(
+        listener: (context, state) {
+          if (state is SearchJobFailed) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Data pekerjaan tidak ditemukan'),
+                backgroundColor: kRedColor,
+              ),
+            );
+          } else if (state is SearchJobSuccess) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Data ditemukan'),
+                backgroundColor: kGreenColor,
+              ),
+            );
+          }
+        },
+        builder: (context, state) {
+          if (state is SearchJobSuccess) {
+            return ListView(
+              padding: EdgeInsets.only(
+                left: defaultMargin,
+                right: defaultMargin,
+                top: 140,
+              ),
+              children: state.jobModel
+                  .map((job) => PeroranganTile(
+                        name: job.namaPekerjaan,
+                        city: job.lokasiPekerjaan,
+                        time: job.tenggangWaktuPekerjaan,
+                      ))
+                  .toList(),
+            );
+          }
+          return Center(
+            child: Lottie.asset(
+              'assets/find.json',
+              width: 300,
+              height: 300,
+              fit: BoxFit.cover,
+              repeat: true,
+            ),
+          );
+        },
       ),
     );
   }
