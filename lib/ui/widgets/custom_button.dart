@@ -10,6 +10,7 @@ class CustomButton extends StatelessWidget {
     this.width = double.infinity,
     this.margin = EdgeInsets.zero,
     this.isLoading = false,
+    this.isApply,
   }) : super(key: key);
 
   final String? title;
@@ -17,6 +18,7 @@ class CustomButton extends StatelessWidget {
   final Function()? onPressed;
   final EdgeInsets? margin;
   final bool? isLoading;
+  final bool? isApply;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,7 @@ class CustomButton extends StatelessWidget {
       child: TextButton(
         onPressed: onPressed,
         style: TextButton.styleFrom(
-          backgroundColor: kBlackColor,
+          backgroundColor: isApply == true ? kGrayColor : kBlackColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),

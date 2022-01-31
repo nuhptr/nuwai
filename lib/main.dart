@@ -17,6 +17,7 @@ import 'package:nuwai/ui/pages/main_page.dart';
 import 'package:nuwai/ui/pages/sign_in_page.dart';
 import 'package:nuwai/ui/pages/sign_up_page.dart';
 import 'package:nuwai/ui/pages/splash_page.dart';
+import 'package:nuwai/ui/pages/success_page.dart';
 
 void main() async {
   await init();
@@ -71,6 +72,7 @@ class MyApp extends StatelessWidget {
           '/guide': (context) => GuidePage(),
           '/guide-apply': (context) => GuidePelamarPage(),
           '/edit': (context) => EditProfil(),
+          '/success': (context) => SuccessPage(),
         },
       ),
     );

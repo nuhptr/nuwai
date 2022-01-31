@@ -8,7 +8,9 @@ class SuccessPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.pushNamedAndRemoveUntil(context, '/main', (route) => false);
+      },
       child: Scaffold(
         body: SafeArea(
           child: Column(

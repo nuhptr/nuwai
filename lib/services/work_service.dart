@@ -8,15 +8,12 @@ class WorkServices {
   final Dio dio = Dio();
 
   // TODO: Post the id of jobs with users id
-  Future<WorkModel> submitJobs(
-      {required int? idJob, required String? userToken}) async {
-    String url = '$baseUrl/lamaran';
-
-    Map<String, dynamic> data = {
-      'id_users': userToken,
-      'id_pekerjaan': idJob,
-    };
-
+  Future<WorkModel> submitJobs({
+    required String? idJob,
+    required String? userToken,
+    int? idUser,
+    String? isApply = 'True',
+  }) async {
     Map<String, dynamic> header = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -24,8 +21,12 @@ class WorkServices {
     };
 
     Response response = await dio.post(
-      url,
-      data: data,
+      '$baseUrl/lamaran',
+      data: {
+        'id_users': idUser,
+        'id_pekerjaan': idJob,
+        'is_apply': isApply,
+      },
       options: Options(
         headers: header,
       ),
@@ -33,7 +34,7 @@ class WorkServices {
     print(response.data);
 
     if (response.data == 200) {
-      Map<String, dynamic> data = response.data['data'];
+      var data = response.data['data'];
       WorkModel workModel = WorkModel.fromJson(data);
 
       return workModel;

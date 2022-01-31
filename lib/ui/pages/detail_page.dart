@@ -1,17 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:nuwai/models/user_model.dart';
 
 import 'package:nuwai/shared/theme.dart';
+import 'package:nuwai/cubit/page_cubit.dart';
+import 'package:nuwai/models/work_model.dart';
 import 'package:nuwai/cubit/user_cubit.dart';
 import 'package:nuwai/cubit/work_cubit.dart';
 import 'package:nuwai/models/job_model.dart';
 import 'package:nuwai/ui/widgets/custom_button.dart';
 
 class DetailPage extends StatefulWidget {
-  DetailPage({Key? key, this.jobModel}) : super(key: key);
+  DetailPage({
+    Key? key,
+    this.jobModel,
+    this.workModel,
+    this.userModel,
+  }) : super(key: key);
 
   final JobModel? jobModel;
+  final WorkModel? workModel;
+  final UserModel? userModel;
 
   @override
   State<DetailPage> createState() => _DetailPageState();
@@ -46,16 +56,32 @@ class _DetailPageState extends State<DetailPage> {
                   style: blackTextStyle.copyWith(fontWeight: regular),
                 ),
               ),
-              BlocBuilder<UserCubit, UserState>(
+              BlocConsumer<UserCubit, UserState>(
+                listener: (context, state) {
+                  if (state is UserFailed) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Gagal apply'),
+                        backgroundColor: kRedColor,
+                      ),
+                    );
+                  }
+                },
                 builder: (context, state) {
                   if (state is UserSuccess) {
                     return TextButton(
                       // TODO: Jika tombol ditekan panggil function handleSubmit
                       onPressed: () {
+                        context.read<PageCubit>().setPage(0);
+                        Navigator.pushNamed(context, '/success');
                         context.read<WorkCubit>().applyWork(
-                              token: state.user.userToken,
-                              idJob: widget.jobModel?.id,
+                              userToken: state.user.userToken,
+                              idUser: state.user.dataUser?.id,
+                              idJob: widget.jobModel?.id.toString(),
                             );
+                        // print(state.user.userToken ?? 'ga ada');
+                        // print(state.user.dataUser?.id ?? '');
+                        // print(widget.jobModel?.id ?? 'G ada');
                       },
                       child: Text(
                         'Iya',
@@ -65,8 +91,11 @@ class _DetailPageState extends State<DetailPage> {
                       ),
                     );
                   }
-                  return Center(
-                    child: CircularProgressIndicator(),
+                  return Text(
+                    'Iya',
+                    style: blackTextStyle.copyWith(
+                      fontWeight: regular,
+                    ),
                   );
                 },
               ),
@@ -295,11 +324,16 @@ class _DetailPageState extends State<DetailPage> {
                         SizedBox(
                           height: 30,
                         ),
-                        CustomButton(
-                          title: 'Apply',
-                          onPressed: () {
-                            showConfirmation();
+                        BlocListener<WorkCubit, WorkState>(
+                          listener: (context, state) {
+                            if (state is WorkFailed) {}
                           },
+                          child: CustomButton(
+                            title: 'Apply',
+                            onPressed: () {
+                              showConfirmation();
+                            },
+                          ),
                         ),
                         SizedBox(
                           height: 30,
