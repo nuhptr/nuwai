@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:http_parser/http_parser.dart';
 
 import 'package:nuwai/models/user_model.dart';
 
@@ -95,53 +96,46 @@ class UserService {
   Future<UserModel> update({
     required String? alamat,
     required String? token,
-    required String? cvPath,
-    required String? photoProfile,
+    required String? fileCv,
+    required String? fileImage,
   }) async {
-    try {
-      var url = '$baseUrl/user';
+    var url = '$baseUrl/user';
+    var headers = {
+      'Content-Type': 'multipart/form-data',
+      'Authorization': token!,
+    };
 
-      var formData = FormData.fromMap({
-        'alamat': alamat,
-        'file': await MultipartFile.fromFile(
-          photoProfile ?? '',
-          filename: photoProfile,
-        ),
-        'cv': await MultipartFile.fromFile(
-          cvPath ?? '',
-          filename: cvPath,
-        ),
-      });
+    String? filename = fileImage?.split('/').last;
+    String? cvFile = fileCv?.split('/').last;
 
-      var response = dio
-          .post(
-        url,
-        data: formData,
-        options: Options(
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': token,
-          },
-        ),
-      )
-          .then(
-        (response) {
-          if (response.statusCode == 200) {
-            print(response.data);
-            var data = response.data['data'];
-            UserModel user = UserModel.fromJson(data['user']);
+    FormData formData = FormData.fromMap({
+      'alamat': alamat,
+      'file': await MultipartFile.fromFile(
+        fileImage ?? '',
+        filename: filename,
+        contentType: MediaType('image', 'jpg/png'),
+      ),
+      'cv': await MultipartFile.fromFile(
+        cvFile ?? '',
+        filename: filename,
+        contentType: MediaType('image', 'jpg/png'),
+      ),
+    });
 
-            return user;
-          } else {
-            throw Exception('Gagal update data');
-          }
-        },
-      );
+    Response response = await dio.post(
+      url,
+      data: formData,
+      options: Options(headers: headers),
+    );
+    print(response.data);
 
-      return response;
-    } catch (e) {
-      print(e);
-      throw Exception(e);
+    if (response.statusCode == 200) {
+      var data = response.data['data'];
+      UserModel userModel = UserModel.fromJson(data);
+
+      return userModel;
+    } else {
+      throw Exception('Gagal Update');
     }
   }
 }

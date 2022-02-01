@@ -16,12 +16,10 @@ class DetailPage extends StatefulWidget {
     Key? key,
     this.jobModel,
     this.workModel,
-    this.userModel,
   }) : super(key: key);
 
   final JobModel? jobModel;
   final WorkModel? workModel;
-  final UserModel? userModel;
 
   @override
   State<DetailPage> createState() => _DetailPageState();
@@ -66,6 +64,9 @@ class _DetailPageState extends State<DetailPage> {
                       ),
                     );
                   }
+                  if (state is UserSuccess) {
+                    Navigator.pushNamed(context, '/success');
+                  }
                 },
                 builder: (context, state) {
                   if (state is UserSuccess) {
@@ -73,11 +74,10 @@ class _DetailPageState extends State<DetailPage> {
                       // TODO: Jika tombol ditekan panggil function handleSubmit
                       onPressed: () {
                         context.read<PageCubit>().setPage(0);
-                        Navigator.pushNamed(context, '/success');
                         context.read<WorkCubit>().applyWork(
                               userToken: state.user.userToken,
                               idUser: state.user.dataUser?.id,
-                              idJob: widget.jobModel?.id.toString(),
+                              idJob: widget.jobModel?.id,
                             );
                         // print(state.user.userToken ?? 'ga ada');
                         // print(state.user.dataUser?.id ?? '');
@@ -326,7 +326,14 @@ class _DetailPageState extends State<DetailPage> {
                         ),
                         BlocListener<WorkCubit, WorkState>(
                           listener: (context, state) {
-                            if (state is WorkFailed) {}
+                            if (state is WorkFailed) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Gagal Aply'),
+                                  backgroundColor: kRedColor,
+                                ),
+                              );
+                            }
                           },
                           child: CustomButton(
                             title: 'Apply',

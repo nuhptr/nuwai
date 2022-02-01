@@ -9,18 +9,18 @@ class WorkServices {
 
   // TODO: Post the id of jobs with users id
   Future<WorkModel> submitJobs({
-    required String? idJob,
+    required int? idJob,
     required String? userToken,
     int? idUser,
     String? isApply = 'True',
   }) async {
-    Map<String, dynamic> header = {
+    var header = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'Authorization': userToken,
     };
 
-    Response response = await dio.post(
+    var response = await dio.post(
       '$baseUrl/lamaran',
       data: {
         'id_users': idUser,
@@ -33,7 +33,7 @@ class WorkServices {
     );
     print(response.data);
 
-    if (response.data == 200) {
+    if (response.statusCode == 200) {
       var data = response.data['data'];
       WorkModel workModel = WorkModel.fromJson(data);
 

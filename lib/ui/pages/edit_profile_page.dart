@@ -1,10 +1,9 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:nuwai/cubit/user_cubit.dart';
 
+import 'package:nuwai/cubit/user_cubit.dart';
 import 'package:nuwai/shared/theme.dart';
 import 'package:nuwai/cubit/page_cubit.dart';
 import 'package:nuwai/ui/widgets/custom_button.dart';
@@ -29,13 +28,12 @@ class _EditProfilState extends State<EditProfil> {
   void dispose() {
     nameController;
     emailController;
-    alamatController;
     super.dispose();
   }
 
   // TODO: get image Photo from gallery
   Future getImageFromGallery() async {
-    var image = await ImagePicker().pickImage(
+    XFile? image = await ImagePicker().pickImage(
       source: ImageSource.gallery,
       imageQuality: 50,
     );
@@ -50,7 +48,7 @@ class _EditProfilState extends State<EditProfil> {
 
   // TODO: get image cv from gallery
   Future getImageCvFromGallery() async {
-    var cvFile = await ImagePicker().pickImage(
+    XFile? cvFile = await ImagePicker().pickImage(
       source: ImageSource.gallery,
       imageQuality: 50,
     );
@@ -100,7 +98,8 @@ class _EditProfilState extends State<EditProfil> {
                       shape: BoxShape.circle,
                       image: DecorationImage(
                         image: imageFile == null
-                            ? NetworkImage(state.user.dataUser?.photoProfile ?? '')
+                            ? NetworkImage(
+                                state.user.dataUser?.photoProfile ?? '')
                             : FileImage(File(imageFile!.path)) as ImageProvider,
                         fit: BoxFit.cover,
                       ),
@@ -125,7 +124,41 @@ class _EditProfilState extends State<EditProfil> {
               ],
             );
           } else {
-            return SizedBox();
+            return Stack(
+              children: [
+                Align(
+                  alignment: Alignment.center,
+                  child: Container(
+                    width: 140,
+                    height: 140,
+                    margin: EdgeInsets.only(top: 10, bottom: 30),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        image: NetworkImage(
+                            'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Unknown_person.jpg/1200px-Unknown_person.jpg'),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    child: Align(
+                      alignment: Alignment.bottomRight,
+                      child: GestureDetector(
+                        onTap: () {
+                          //TODO: get image from gallery
+                          getImageFromGallery();
+                        },
+                        child: Image.asset(
+                          'assets/tambah_foto.png',
+                          width: 40,
+                          height: 40,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            );
           }
         },
       );
@@ -158,7 +191,28 @@ class _EditProfilState extends State<EditProfil> {
               ],
             );
           } else {
-            return SizedBox();
+            return Column(
+              children: [
+                CustomTextFormField(
+                  title: 'Nama Lengkap',
+                  hintText: 'Name not found',
+                  isEnable: false,
+                  textEditingController: nameController,
+                ),
+                CustomTextFormField(
+                  title: 'Email',
+                  hintText: 'Email not found',
+                  isEnable: false,
+                  textEditingController: emailController,
+                ),
+                CustomTextFormField(
+                  title: 'Alamat Lengkap',
+                  hintText: 'alamat not found',
+                  textEditingController: alamatController,
+                  inputType: TextInputType.text,
+                )
+              ],
+            );
           }
         },
       );
@@ -207,7 +261,40 @@ class _EditProfilState extends State<EditProfil> {
               ),
             );
           } else {
-            return SizedBox();
+            return Container(
+              margin: EdgeInsets.only(top: 20),
+              child: Row(
+                children: [
+                  Container(
+                    width: 144,
+                    height: 180,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      image: DecorationImage(
+                        image: NetworkImage(
+                            'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Unknown_person.jpg/1200px-Unknown_person.jpg'),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 35),
+                  GestureDetector(
+                    onTap: () {
+                      // add foto from gallery
+                      getImageCvFromGallery();
+                    },
+                    child: Text(
+                      'Upload CV',
+                      style: blackTextStyle.copyWith(
+                        fontWeight: semiBold,
+                        fontSize: 18,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            );
           }
         },
       );
@@ -245,11 +332,17 @@ class _EditProfilState extends State<EditProfil> {
                       cvPath: cvFileImage?.path,
                       token: state.user.userToken,
                     );
+                print(imageFile);
+                print(cvFileImage);
               },
               margin: EdgeInsets.only(top: 30, bottom: 20),
             );
           } else {
-            return SizedBox();
+            return CustomButton(
+              onPressed: () {},
+              title: '',
+              isLoading: true,
+            );
           }
         },
       );
