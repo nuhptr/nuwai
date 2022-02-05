@@ -9,7 +9,7 @@ class WorkServices {
 
   // TODO: Post the id of jobs with users id
   Future<WorkModel> submitJobs({
-    required String? idJob,
+    required int? idJob,
     required String? userToken,
     int? idUser,
     String? isApply = 'True',
@@ -20,7 +20,7 @@ class WorkServices {
       'Authorization': userToken,
     };
 
-    Response response = await dio.post(
+    var response = await dio.post(
       '$baseUrl/lamaran',
       data: {
         'id_users': idUser,
@@ -31,12 +31,13 @@ class WorkServices {
         headers: header,
       ),
     );
-    print(response.data);
 
     if (response.data == 200) {
       var data = response.data['data'];
       WorkModel workModel = WorkModel.fromJson(data);
 
+      print(response.data);
+      print(response.headers);
       return workModel;
     } else {
       throw Exception('Gagal Submit Pekerjaan');

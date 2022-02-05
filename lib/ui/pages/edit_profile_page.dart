@@ -54,7 +54,6 @@ class _EditProfilState extends State<EditProfil> {
       source: ImageSource.gallery,
       imageQuality: 50,
     );
-
     setState(() {
       if (cvFile != null) {
         cvFileImage = cvFile;
@@ -100,7 +99,8 @@ class _EditProfilState extends State<EditProfil> {
                       shape: BoxShape.circle,
                       image: DecorationImage(
                         image: imageFile == null
-                            ? NetworkImage(state.user.dataUser?.photoProfile ?? '')
+                            ? NetworkImage(
+                                state.user.dataUser?.photoProfile ?? '')
                             : FileImage(File(imageFile!.path)) as ImageProvider,
                         fit: BoxFit.cover,
                       ),
@@ -178,13 +178,13 @@ class _EditProfilState extends State<EditProfil> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       image: DecorationImage(
+                        fit: BoxFit.cover,
                         image: cvFileImage == null
                             ? NetworkImage(
-                                state.user.dataUser?.cvPath ?? '',
+                                'https://en.islcollective.com/preview/201705/b2/student-cv-template-worksheet-templates-layouts-writing-creative-writi_98924_1.jpg',
                               )
                             : FileImage(File(cvFileImage!.path))
                                 as ImageProvider,
-                        fit: BoxFit.cover,
                       ),
                     ),
                   ),
@@ -229,12 +229,6 @@ class _EditProfilState extends State<EditProfil> {
           }
         },
         builder: (context, state) {
-          if (state is UserLoading) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-
           if (state is UserSuccess) {
             return CustomButton(
               title: 'Perbaharui',
@@ -249,7 +243,10 @@ class _EditProfilState extends State<EditProfil> {
               margin: EdgeInsets.only(top: 30, bottom: 20),
             );
           } else {
-            return SizedBox();
+            return CustomButton(
+              title: 'Perbaharui',
+              onPressed: () {},
+            );
           }
         },
       );

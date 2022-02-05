@@ -18,7 +18,7 @@ class CustomButton extends StatelessWidget {
   final Function()? onPressed;
   final EdgeInsets? margin;
   final bool? isLoading;
-  final bool? isApply;
+  final String? isApply;
 
   @override
   Widget build(BuildContext context) {
@@ -27,9 +27,9 @@ class CustomButton extends StatelessWidget {
       width: width,
       height: 55,
       child: TextButton(
-        onPressed: onPressed,
+        onPressed: isApply == 'True' ? () {} : onPressed,
         style: TextButton.styleFrom(
-          backgroundColor: isApply == true ? kGrayColor : kBlackColor,
+          backgroundColor: isApply == 'True' ? kGrayColor : kBlackColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),

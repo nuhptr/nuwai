@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:nuwai/models/user_model.dart';
 
 import 'package:nuwai/shared/theme.dart';
-import 'package:nuwai/cubit/page_cubit.dart';
 import 'package:nuwai/models/work_model.dart';
+import 'package:nuwai/models/job_model.dart';
+import 'package:nuwai/cubit/page_cubit.dart';
 import 'package:nuwai/cubit/user_cubit.dart';
 import 'package:nuwai/cubit/work_cubit.dart';
-import 'package:nuwai/models/job_model.dart';
 import 'package:nuwai/ui/widgets/custom_button.dart';
 
 class DetailPage extends StatefulWidget {
@@ -16,12 +15,10 @@ class DetailPage extends StatefulWidget {
     Key? key,
     this.jobModel,
     this.workModel,
-    this.userModel,
   }) : super(key: key);
 
   final JobModel? jobModel;
   final WorkModel? workModel;
-  final UserModel? userModel;
 
   @override
   State<DetailPage> createState() => _DetailPageState();
@@ -40,7 +37,7 @@ class _DetailPageState extends State<DetailPage> {
               child: ListBody(
                 children: [
                   Text(
-                    'Melamar?',
+                    'Apply?',
                     style: orangeTextStyle.copyWith(fontWeight: semiBold),
                   ),
                 ],
@@ -70,16 +67,16 @@ class _DetailPageState extends State<DetailPage> {
                 builder: (context, state) {
                   if (state is UserSuccess) {
                     return TextButton(
-                      // TODO: Jika tombol ditekan panggil function handleSubmit
+                      // TODO: apply work
                       onPressed: () {
                         context.read<PageCubit>().setPage(0);
-                        Navigator.pushNamed(context, '/success');
                         context.read<WorkCubit>().applyWork(
                               userToken: state.user.userToken,
                               idUser: state.user.dataUser?.id,
-                              idJob: widget.jobModel?.id.toString(),
+                              idJob: widget.jobModel?.id,
                             );
-                        // print(state.user.userToken ?? 'ga ada');
+                        print(state.user.userToken ?? 'ga ada');
+                        Navigator.pushNamed(context, '/success');
                         // print(state.user.dataUser?.id ?? '');
                         // print(widget.jobModel?.id ?? 'G ada');
                       },
@@ -91,12 +88,7 @@ class _DetailPageState extends State<DetailPage> {
                       ),
                     );
                   }
-                  return Text(
-                    'Iya',
-                    style: blackTextStyle.copyWith(
-                      fontWeight: regular,
-                    ),
-                  );
+                  return CircularProgressIndicator();
                 },
               ),
             ],
@@ -324,16 +316,34 @@ class _DetailPageState extends State<DetailPage> {
                         SizedBox(
                           height: 30,
                         ),
-                        BlocListener<WorkCubit, WorkState>(
+                        // TODO: Logic Enable
+                        BlocConsumer<WorkCubit, WorkState>(
                           listener: (context, state) {
-                            if (state is WorkFailed) {}
+                            if (state is WorkSuccess) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Kamu Apply pekerjaan ini'),
+                                  backgroundColor: kRedColor,
+                                ),
+                              );
+                            }
                           },
-                          child: CustomButton(
-                            title: 'Apply',
-                            onPressed: () {
-                              showConfirmation();
-                            },
-                          ),
+                          builder: (context, state) {
+                            if (state is WorkSuccess) {
+                              return CustomButton(
+                                title: 'Apply',
+                                onPressed: () {},
+                                isApply: state.workModel.isApply,
+                              );
+                            } else {
+                              return CustomButton(
+                                title: 'Apply',
+                                onPressed: () {
+                                  showConfirmation();
+                                },
+                              );
+                            }
+                          },
                         ),
                         SizedBox(
                           height: 30,

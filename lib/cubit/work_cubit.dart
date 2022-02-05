@@ -11,7 +11,7 @@ class WorkCubit extends Cubit<WorkState> {
   // apply job
   void applyWork({
     required String? userToken,
-    required String? idJob,
+    required int? idJob,
     int? idUser,
     String? isApply,
   }) async {
