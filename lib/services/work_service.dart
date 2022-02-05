@@ -14,7 +14,7 @@ class WorkServices {
     int? idUser,
     String? isApply = 'True',
   }) async {
-    Map<String, dynamic> header = {
+    var header = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'Authorization': userToken,
@@ -32,7 +32,7 @@ class WorkServices {
       ),
     );
 
-    if (response.data == 200) {
+    if (response.statusCode == 200) {
       var data = response.data['data'];
       WorkModel workModel = WorkModel.fromJson(data);
 

@@ -63,13 +63,13 @@ class UserCubit extends Cubit<UserState> {
   }) async {
     try {
       emit(UserLoading());
-      // UserModel user = await UserService().update(
-      //   alamat: alamat,
-      //   token: token,
-      //   cvPath: cvPath,
-      //   photoProfile: photoProfile,
-      // );
-      // emit(UserSuccess(user));
+      UserModel user = await UserService().update(
+        alamat: alamat,
+        token: token,
+        fileCv: cvPath,
+        fileImage: photoProfile,
+      );
+      emit(UserSuccess(user));
     } catch (e) {
       emit(UserFailed(e.toString()));
     }

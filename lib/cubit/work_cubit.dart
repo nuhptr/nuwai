@@ -13,19 +13,15 @@ class WorkCubit extends Cubit<WorkState> {
     required String? userToken,
     required int? idJob,
     int? idUser,
-    String? isApply,
   }) async {
     try {
       emit(WorkLoading());
-
       WorkModel workModel = await WorkServices().submitJobs(
         idJob: idJob,
         idUser: idUser,
         userToken: userToken,
-        isApply: isApply,
       );
       print(workModel);
-
       emit(WorkSuccess(workModel));
     } catch (e) {
       emit(
