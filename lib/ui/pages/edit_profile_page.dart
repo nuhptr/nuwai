@@ -21,8 +21,8 @@ class _EditProfilState extends State<EditProfil> {
   TextEditingController? emailController = TextEditingController(text: '');
   TextEditingController? alamatController = TextEditingController(text: '');
 
-  XFile? imageFile;
-  XFile? cvFileImage;
+  File? imageFile;
+  File? cvFileImage;
 
   @override
   void dispose() {
@@ -39,7 +39,7 @@ class _EditProfilState extends State<EditProfil> {
     );
     setState(() {
       if (image != null) {
-        imageFile = image;
+        imageFile = File(image.path);
       } else {
         print('No image selected');
       }
@@ -55,7 +55,7 @@ class _EditProfilState extends State<EditProfil> {
 
     setState(() {
       if (cvFile != null) {
-        cvFileImage = cvFile;
+        cvFileImage = File(cvFile.path);
       } else {
         print('No image selected');
       }
@@ -316,32 +316,33 @@ class _EditProfilState extends State<EditProfil> {
           }
         },
         builder: (context, state) {
-          if (state is UserLoading) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-
           if (state is UserSuccess) {
             return CustomButton(
               title: 'Perbaharui',
               onPressed: () {
-                context.read<UserCubit>().update(
-                      alamat: alamatController?.text,
-                      photoProfile: imageFile?.path,
-                      cvPath: cvFileImage?.path,
-                      token: state.user.userToken,
-                    );
-                print(imageFile);
-                print(cvFileImage);
+                if (imageFile == null && cvFileImage == null) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text('Isi Semua'),
+                    backgroundColor: kRedColor,
+                  ));
+                } else {
+                  context.read<UserCubit>().update(
+                        alamat: alamatController?.text,
+                        photoProfile: imageFile!.path,
+                        cvPath: cvFileImage!.path,
+                        token: state.user.userToken,
+                      );
+                  print(imageFile);
+                  print(cvFileImage);
+                  print(state.user.userToken);
+                }
               },
               margin: EdgeInsets.only(top: 30, bottom: 20),
             );
           } else {
             return CustomButton(
               onPressed: () {},
-              title: '',
-              isLoading: true,
+              title: 'Perbaharui',
             );
           }
         },

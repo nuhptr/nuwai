@@ -18,9 +18,7 @@ class UserModel extends Equatable {
       dataUser: json['user'] != null
           ? DataUser.fromJson(json['user'])
           : DataUser.initial(json),
-      tokenType: json['token_type'],
-      accessToken: json['access_token'],
-      userToken: json['token_type'] + '' + json['access_token'],
+      userToken: json['token_type'] + ' ' + json['access_token'],
     );
   }
 

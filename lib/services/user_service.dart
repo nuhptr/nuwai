@@ -93,7 +93,7 @@ class UserService {
   }
 
   //TODO: update (belum done)
-  Future<UserModel> update({
+  Future update({
     required String? alamat,
     required String? token,
     required String? fileCv,
@@ -101,41 +101,69 @@ class UserService {
   }) async {
     var url = '$baseUrl/user';
     var headers = {
-      'Content-Type': 'multipart/form-data',
+      'Accept': 'multipart/form-data',
       'Authorization': token!,
+      'Content-Type': 'multipart/form-data',
     };
 
     String? filename = fileImage?.split('/').last;
     String? cvFile = fileCv?.split('/').last;
 
-    FormData formData = FormData.fromMap({
+    Map<String, dynamic> formData = {
       'alamat': alamat,
       'file': await MultipartFile.fromFile(
         fileImage ?? '',
         filename: filename,
-        contentType: MediaType('image', 'jpg/png'),
+        contentType: MediaType('image', '*'),
       ),
       'cv': await MultipartFile.fromFile(
-        cvFile ?? '',
-        filename: filename,
-        contentType: MediaType('image', 'jpg/png'),
+        fileCv ?? '',
+        filename: cvFile,
+        contentType: MediaType('image', '*'),
       ),
-    });
+    };
 
-    Response response = await dio.post(
+    var response = await dio.post(
       url,
       data: formData,
+      options: Options(
+        headers: headers,
+        responseType: ResponseType.json,
+      ),
+    );
+    print(response.data);
+
+    if (response.statusCode == 200) {
+      var data = response.data['data'];
+      UserModel user = UserModel.fromJson(data);
+
+      return user;
+    } else {
+      throw Exception('Gagal Update');
+    }
+  }
+
+  Future<UserModel> getUser(String? token) async {
+    Map<String, dynamic> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': token,
+    };
+
+    String? url = '$baseUrl/user';
+
+    Response response = await dio.get(
+      url,
       options: Options(headers: headers),
     );
     print(response.data);
 
     if (response.statusCode == 200) {
       var data = response.data['data'];
-      UserModel userModel = UserModel.fromJson(data);
+      UserModel user = UserModel.fromJson(data);
 
-      return userModel;
+      return user;
     } else {
-      throw Exception('Gagal Update');
+      throw Exception('User Gagal Login');
     }
   }
 }

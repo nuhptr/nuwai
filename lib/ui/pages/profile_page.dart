@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nuwai/shared/theme.dart';
 import 'package:nuwai/cubit/page_cubit.dart';
 import 'package:nuwai/cubit/user_cubit.dart';
+import 'package:nuwai/ui/pages/edit_profile_page.dart';
 import 'package:nuwai/ui/widgets/header_profile.dart';
 import 'package:nuwai/ui/widgets/profile_menu_tile.dart';
 
@@ -54,7 +55,12 @@ class ProfilePage extends StatelessWidget {
               iconUrl: 'assets/icon_profil.png',
               title: 'Ubah Profil',
               onPressed: () {
-                Navigator.pushNamed(context, '/edit');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: ((context) => EditProfil()),
+                  ),
+                );
               },
             ),
             ProfileMenuItem(

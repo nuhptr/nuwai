@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:nuwai/models/user_model.dart';
 
 import 'package:nuwai/shared/theme.dart';
 import 'package:nuwai/cubit/page_cubit.dart';

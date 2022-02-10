@@ -74,4 +74,16 @@ class UserCubit extends Cubit<UserState> {
       emit(UserFailed(e.toString()));
     }
   }
+
+  void fetch({
+    required token,
+  }) async {
+    try {
+      emit(UserLoading());
+      UserModel user = await UserService().getUser(token);
+      emit(UserSuccess(user));
+    } catch (e) {
+      emit(UserFailed(e.toString()));
+    }
+  }
 }
